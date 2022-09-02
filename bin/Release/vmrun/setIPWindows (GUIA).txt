@@ -1,9 +1,0 @@
-Por padrão o usuario do dedicado tá defindo como root
-Por padrão o usuario e a senha da maquina estao definidos como Administrador e omini123*
-
-	Parametros:
-		%1 = IP do dedicado
-		%2 = Senha do dedicado
-		%3 = Caminho do VMX (Exemplo:"[HD 2] maquina1/maquina1.vmx")
-		%4 = IP Address
-		%5 = IP Getaway

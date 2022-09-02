@@ -1,2 +1,0 @@
-@ECHO OFF
-vmrun\vmrun -T ominihost1 -h https://%1/sdk -u root -p %2 -gu Administrator -gp omini123* runProgramInGuest %3 C:\Windows\System32\netsh.exe interface ip set address "OminiHost" static %4 255.255.255.0 %5 1

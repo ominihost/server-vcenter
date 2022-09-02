@@ -1,0 +1,2 @@
+@ECHO OFF
+vmrun\vmrun -T ominihost1 -h https://%1/sdk -u root -p %2 -gu Administrador -gp omini123* runProgramInGuest %3 C:\Windows\System32\netsh.exe interface ipv4 set address "OminiHost" static %4 255.255.255.0 %5 >> logs\vmrum.log
