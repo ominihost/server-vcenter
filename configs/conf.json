@@ -1,0 +1,8 @@
+{
+  "vcenter_ip": "vc.ominihost.com",
+  "vcenter_user": "Administrator@ominihost.com",
+  "vcenter_pass": "Vaitoma1!",
+  "httpLink": "http://127.0.0.1:8084/",
+  "password": "123",
+  "name": "OminiHost2"
+}
