@@ -472,6 +472,7 @@ namespace OminiHost_Server
                 ((CustomizationSysprep)newVMSpec.Customization.Identity).GuiUnattended.Password = new CustomizationPassword { PlainText = true, Value = vmPHPEspec.novaSenha };
                 newVMSpec.Customization.NicSettingMap[0].Adapter.Gateway = new string[] { host.Config.Network.IpRouteConfig.DefaultGateway };
                 newVMSpec.Customization.NicSettingMap[0].Adapter.Ip = new CustomizationFixedIp { IpAddress = vmPHPEspec.ipVM };
+                newVMSpec.Customization.NicSettingMap[0].Adapter.SubnetMask = new string { 255.255.255.255 };
             }
             
 

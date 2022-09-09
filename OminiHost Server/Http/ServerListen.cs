@@ -102,7 +102,7 @@ namespace OminiHost_Server.Http
                             {
                                 OminiHost_Server.Data.VMEspec vmEspec = JsonConvert.DeserializeObject<OminiHost_Server.Data.VMEspec>( Omini.Base64Decode(data.otherData) );
 
-                                Debug.WriteLine("(criarVM) " + Omini.Base64Decode(data.otherData));
+                                Debug.WriteLine("(criarVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
 
                                 if (this.telaLoad.ip_tarefas.ContainsKey(vmEspec.ipVM))
                                 {
@@ -171,6 +171,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(formatarVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.VMEspec vmEspec = JsonConvert.DeserializeObject<OminiHost_Server.Data.VMEspec>( Omini.Base64Decode(data.otherData) );
@@ -233,6 +234,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(powerOnVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>( Omini.Base64Decode(data.otherData) );
@@ -263,6 +265,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(powerOffVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -292,6 +295,8 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+
+                            Debug.WriteLine("(suspendVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -321,6 +326,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(restartVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -344,6 +350,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(guestRestartVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -367,6 +374,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(guestShutdownVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -395,6 +403,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(deleteVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -422,6 +431,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(statePowerVM) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.powerOnOffSuspend vmForChange = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
@@ -455,6 +465,7 @@ namespace OminiHost_Server.Http
                         {
                             vmwareConnect vmware = this.telaLoad.vmware;
                             VimClient vimClient = this.telaLoad.clientTasks;
+                            Debug.WriteLine("(getVMInfo) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             try
                             {
                                 OminiHost_Server.Data.vmGetInfos vmForGet = JsonConvert.DeserializeObject<OminiHost_Server.Data.vmGetInfos>( Omini.Base64Decode(data.otherData) );
@@ -525,6 +536,7 @@ namespace OminiHost_Server.Http
                     case "getTarefaStatus":
                         {
                             OminiHost_Server.Data.powerOnOffSuspend phpInfo = JsonConvert.DeserializeObject<OminiHost_Server.Data.powerOnOffSuspend>(Omini.Base64Decode(data.otherData));
+                            Debug.WriteLine("(getTarefaStatus) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             if (this.telaLoad.ip_tarefas.ContainsKey(phpInfo.vmip))
                             {
                                 OminiHost_Server.Data.infoTarefa resposta = new OminiHost_Server.Data.infoTarefa();
@@ -642,6 +654,7 @@ namespace OminiHost_Server.Http
                             VimClient vimClient = this.telaLoad.clientTasks;
                             OminiHost_Server.Data.hostsInDC phpInfo = JsonConvert.DeserializeObject<OminiHost_Server.Data.hostsInDC>( Omini.Base64Decode(data.otherData) );
                             Dictionary<string, string>[] valoresSaida = vmware.getHostsInDataCenter(vimClient, phpInfo.DCName).ToArray();
+                            Debug.WriteLine("(getHostsInDatacenter) " + Omini.Base64Decode(data.otherData) + data.sPPk + data.cmd);
                             if (valoresSaida == null)
                             {
                                 saida.Result = "dc or host null";

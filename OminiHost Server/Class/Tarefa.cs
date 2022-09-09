@@ -226,7 +226,7 @@ namespace OminiHost_Server.Class
             Omini.debug("Disco pego, decodificando a senha");
             //string senha = Omini.Base64Decode(vmware.getCustomFieldInHost(this.host, espec.customField)); Omini.debug("Senha pega");
             string ipDedicado = this.host.Name; Omini.debug("IP do dedicado "+ipDedicado);
-            string ipMaquina = espec.ipVM; Omini.debug("IP da VM"+ipMaquina);
+            string ipMaquina = espec.ipVM; Omini.debug("IP da VM "+ipMaquina);
             string novaSenha = espec.novaSenha; Omini.debug("Nova senha "+novaSenha);
             string gateway = host.Config.Network.IpRouteConfig.DefaultGateway; Omini.debug("Gateway "+gateway);
             try
@@ -309,13 +309,35 @@ namespace OminiHost_Server.Class
                                 this.msg = "aguardando para configurar o ip";
                                 Thread.Sleep(30000);
                                 Omini.debug("Tempo acabou iniciando configuracao");
-                                ConfigurarIP(tf);                                
+                                ConfigurarIP(tf);
+                                
+                            }
+                            else
+                            {
+                                Thread.Sleep(30000);
+                                Omini.debug("Configurando IP em Windows");
+                                this.msg = "aguardando para configurar o ip";
+                                this.tela_inicio.WriteConsole("Configurando IP em Windows " + espec.ipVM);
+                                this.progresso = 94;
+                                Thread.Sleep(150000);
+                                this.progresso = 95;
+                                Thread.Sleep(150000);
+                                this.progresso = 96;
+                                Thread.Sleep(150000);
+                                this.progresso = 97;
+                                Thread.Sleep(150000);
+                                this.progresso = 98;
+                                Thread.Sleep(30000);
+                                this.progresso = 99;
+                                Thread.Sleep(30000);
+                                this.progresso = 100;
                             }
                             Omini.debug("Esperando pra marcar como terminado");
                             Thread.Sleep(30000);
                             this.estadoAtual = "terminada";
                             this.msg = "";
                             this.tela_inicio.WriteConsole("Tarefa " + getTarefaType() + " da maquina " + espec.ipVM + " foi termanada" + Environment.NewLine);
+
                         }
                         return;
                     //Tarefa terminada                        
