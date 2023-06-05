@@ -410,12 +410,16 @@ namespace OminiHost_Server.Http
                                 VirtualMachine vm = vmware.getMachine(vimClient, vmForChange.vmip);
                                 if (vm == null)
                                 {
+                                    //saida.Result = vm;
                                     saida.Result = "vm not found";
+                                    this.telaLoad.TelaInicial.WriteConsole("[ERROR] Erro ao Deletar a VM " + vmForChange.vmip);
                                 }
                                 else
-                                {                                
+                                {
                                     vm.Destroy_Task();
                                     saida.Result = "deletado";
+                                    this.telaLoad.TelaInicial.WriteConsole("[DELETE] A VM: " + vmForChange.vmip +" foi deletada com sucesso!");
+                                    
                                 }
                                 SendString(context, JsonConvert.SerializeObject(saida));
                             }

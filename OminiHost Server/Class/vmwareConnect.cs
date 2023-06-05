@@ -229,6 +229,8 @@ namespace OminiHost_Server
             Debug.WriteLine(vimClient.ToString());
             
             List<VirtualMachine> vmList = this.getEntities<VirtualMachine>(vimClient, null, filtro);
+            //return vmList;
+            Debug.WriteLine("ERRO vmlist: " + vmList);
             if (vmList == null) return null;
 
             foreach (VirtualMachine vm in vmList)
@@ -239,11 +241,20 @@ namespace OminiHost_Server
                     {
                         continue;
                     }
-                    Regex regex = new Regex(@"\d{1,3}(\.\d{1,3}){3}");
-                    Match match = regex.Match(vm.Name);
-                    if (match.Success)
+
+                    //Regex regex = new Regex(@"\d{1,3}(\.\d{1,3}){3}");
+                    Regex regexipv4 = new Regex(@"\d{1,3}(\.\d{1,3}){3}");
+                    Regex regexipv6 = new Regex(@"\d([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}");
+
+                    Match matchipv6 = regexipv6.Match(vm.Name);
+                    Match matchipv4 = regexipv4.Match(vm.Name);
+
+                    bool matchresult = matchipv6.Success == true ? matchipv6.Success : matchipv4.Success;
+
+                    if (matchresult)
                     {
-                        string nameFind = match.Value.ToLower();
+                        string nameFind = matchipv6.Success == true ? matchipv6.Value.ToLower() : matchipv4.Value.ToLower();
+
                         if (nameFind.Equals(name.ToLower()))
                         {
                             return vm;
@@ -463,6 +474,7 @@ namespace OminiHost_Server
             newVMSpec.Config.CpuAllocation.Limit = vmPHPEspec.CPU_Mhz;
             newVMSpec.Config.MemoryAllocation = new ResourceAllocationInfo();
             newVMSpec.Config.MemoryAllocation.Limit = newVMSpec.Config.MemoryMB;
+            
 
             Debug.WriteLine("SET limit VM, CPU = "+ newVMSpec.Config.CpuAllocation.Limit+" RAM = "+ newVMSpec.Config.MemoryAllocation.Limit);
 
@@ -470,11 +482,39 @@ namespace OminiHost_Server
             {
                 newVMSpec.Customization = getWindowsCustomization(vimClient, vmPHPEspec);
                 ((CustomizationSysprep)newVMSpec.Customization.Identity).GuiUnattended.Password = new CustomizationPassword { PlainText = true, Value = vmPHPEspec.novaSenha };
-                newVMSpec.Customization.NicSettingMap[0].Adapter.Gateway = new string[] { host.Config.Network.IpRouteConfig.DefaultGateway };
-                newVMSpec.Customization.NicSettingMap[0].Adapter.Ip = new CustomizationFixedIp { IpAddress = vmPHPEspec.ipVM };
-                newVMSpec.Customization.NicSettingMap[0].Adapter.SubnetMask = new string { 255.255.255.255 };
+                
+                string ipv4 = vmPHPEspec.IPv4;
+                string ipv6 = vmPHPEspec.IPv6;
+                string nulo = "null";
+
+                if (ipv4 != nulo)
+                {
+                    //newVMSpec.Customization.NicSettingMap[0].Adapter.Gateway = new string[] { host.Config.Network.IpRouteConfig.DefaultGateway };
+                    //newVMSpec.Customization.NicSettingMap[0].Adapter.Gateway = new string[] { "10.15.15.1" };
+                    newVMSpec.Customization.NicSettingMap[0].Adapter.Gateway = new string[] { vmPHPEspec.IPv4Gateway };
+                    newVMSpec.Customization.NicSettingMap[0].Adapter.Ip = new CustomizationFixedIp { IpAddress = vmPHPEspec.IPv4 };
+                    newVMSpec.Customization.NicSettingMap[0].Adapter.SubnetMask = vmPHPEspec.IPv4Mask;
+                }
+
+                if (ipv6 != nulo)
+                {
+                    
+                    newVMSpec.Customization.NicSettingMap[0].Adapter.IpV6Spec.Gateway = new string[] { vmPHPEspec.IPv6Gateway };
+                    newVMSpec.Customization.NicSettingMap[0].Adapter.IpV6Spec.Ip = new CustomizationIpV6Generator[] { new CustomizationFixedIpV6 { IpAddress = vmPHPEspec.IPv6, SubnetMask = vmPHPEspec.IPv6Mask } };
+                }
+
+                newVMSpec.Customization.NicSettingMap[0].Adapter.DnsServerList = new string[] {
+                    vmPHPEspec.IPv4DNS1, 
+                    vmPHPEspec.IPv4DNS2, 
+                    vmPHPEspec.IPv4DNS3, 
+                    vmPHPEspec.IPv4DNS4, 
+                    vmPHPEspec.IPv6DNS1, 
+                    vmPHPEspec.IPv6DNS2, 
+                    vmPHPEspec.IPv6DNS3, 
+                    vmPHPEspec.IPv6DNS4
+                };
             }
-            
+
 
             VirtualDevice template = getNewNetWorkDevice(vmTemplate);
             if(template == null)

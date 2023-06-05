@@ -108,13 +108,37 @@ namespace OminiHost_Server.Class
                         return Erros_Criacao.DedicadoNaoTemHosts;
                     }
 
+                    string ipv6 = espec.IPv6;
+                    string ipv4 = espec.IPv4;
+                    string sistemaOperacional = espec.sistemaOperacional;
+                    string protocolv = "";
+                    if (sistemaOperacional == "windows")
+                    {
+                        if (ipv6 != "null" && ipv4 != "null")
+                        {
+                            protocolv = "";
+                        }
+
+                        if (ipv6 == "null" && ipv4 != "null")
+                        {
+                            protocolv = "-ipv4";
+                        }
+
+                        if (ipv6 != "null" && ipv4 == "null")
+                        {
+                            protocolv = "";
+                        }
+                    }
+                        
+
                     // Tentar pegar template pelo ip dedicado (host name)
-                    string nameOfTempalte = espec.templateSystemName + " "+host.Name;                    
+                    string nameOfTempalte = espec.templateSystemName + protocolv + " " +host.Name;                    
                     VirtualMachine template = vmware.findTemplateInDatacenter(this.client, datacenter, nameOfTempalte);
+
                     if(template == null)
                     {                        
                         // Tentar pegar o template pelo nome do datacenter 
-                        nameOfTempalte = espec.templateSystemName + " " + espec.dedicado;
+                        nameOfTempalte = espec.templateSystemName + protocolv + " " + espec.dedicado;
                         template = vmware.findTemplateInDatacenter(this.client, datacenter, nameOfTempalte);
                     }
 
@@ -177,11 +201,17 @@ namespace OminiHost_Server.Class
                     return Erros_Formatacao.VMNaoEncontrada;
                 }
 
-                Regex regex = new Regex(@"\d{1,3}(\.\d{1,3}){3}");
-                Match match = regex.Match(vm.Name);
-                if (match.Success)
+                Regex regexipv4 = new Regex(@"\d{1,3}(\.\d{1,3}){3}");
+                Regex regexipv6 = new Regex(@"\d([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}");
+
+                Match matchipv6 = regexipv6.Match(vm.Name);
+                Match matchipv4 = regexipv4.Match(vm.Name);
+
+                bool matchresult = matchipv6.Success == true ? matchipv6.Success : matchipv4.Success;
+
+                if (matchresult)
                 {
-                    string nameFind = match.Value.ToLower();
+                    string nameFind = matchipv6.Success == true ? matchipv6.Value.ToLower() : matchipv4.Value.ToLower();
                     if (!nameFind.Equals(vmname.ToLower()))
                     {
                         continue;
@@ -210,6 +240,7 @@ namespace OminiHost_Server.Class
             }
             return Erros_Formatacao.VMNaoEncontrada;
         }
+        ///configurar IP em sistemas linux
         public void ConfigurarIP(VMware.Vim.Task tf)
         {
             Omini.debug("Funcao de configuracao iniciada");
@@ -228,7 +259,22 @@ namespace OminiHost_Server.Class
             string ipDedicado = this.host.Name; Omini.debug("IP do dedicado "+ipDedicado);
             string ipMaquina = espec.ipVM; Omini.debug("IP da VM "+ipMaquina);
             string novaSenha = espec.novaSenha; Omini.debug("Nova senha "+novaSenha);
+            string ipv6 = espec.IPv6;
+            string IPv6Gateway = espec.IPv6Gateway;
+            int IPv6Mask = espec.IPv6Mask;
+            string IPv6DNS1 = espec.IPv6DNS1;
+            string IPv6DNS2 = espec.IPv6DNS2;
+            string IPv6DNS3 = espec.IPv6DNS3;
+            string IPv6DNS4 = espec.IPv6DNS4;
+            string ipv4 = espec.IPv4;
+            string IPv4Gateway = espec.IPv4Gateway;
+            string IPv4Mask = espec.IPv4Mask;
+            string IPv4DNS1 = espec.IPv4DNS1;
+            string IPv4DNS2 = espec.IPv4DNS2;
+            string IPv4DNS3 = espec.IPv4DNS3;
+            string IPv4DNS4 = espec.IPv4DNS4;
             string gateway = host.Config.Network.IpRouteConfig.DefaultGateway; Omini.debug("Gateway "+gateway);
+            
             try
             {
                 /*Omini.debug("Abrindo programa de configura de ip linux!");
@@ -245,8 +291,43 @@ namespace OminiHost_Server.Class
                 VirtualMachine vm = vmware.getMachine(this.client, ipMaquina);                
                 if(vm != null)
                 {
-                    long processPid = vmware.startProcessInVm(this.client, vm, "root", "omini123*", "/usr/bin/ipconf", $"{ipMaquina} {gateway} {novaSenha}");
-                    if(processPid != default)
+
+                    //long processPid = vmware.startProcessInVm(this.client, vm, "root", "omini123*", "/usr/bin/ipconf", $"{ipMaquina} {gateway} {novaSenha}");
+
+                    long processPid = default;
+
+                    if (ipv6 != "null" && ipv4 != "null")
+                    {
+                        processPid = vmware.startProcessInVm(this.client, vm, "root", "omini123*", "/usr/bin/ip46conf", $"{ipv4} {IPv4Mask} {IPv4Gateway} {IPv4DNS1} {IPv4DNS2} {IPv4DNS3} {IPv4DNS4} {ipv6} {IPv6Mask} {IPv6Gateway} {IPv6DNS1} {IPv6DNS2} {IPv6DNS3} {IPv6DNS4} {novaSenha}");
+                    }
+
+                    if (ipv6 == "null" && ipv4 != "null")
+                    {
+                        processPid = vmware.startProcessInVm(this.client, vm, "root", "omini123*", "/usr/bin/ip4conf", $"{ipv4} {IPv4Mask} {IPv4Gateway} {IPv4DNS1} {IPv4DNS2} {IPv4DNS3} {IPv4DNS4} {novaSenha}");
+                    }
+
+                    if (ipv6 != "null" && ipv4 == "null")
+                    {
+                        processPid = vmware.startProcessInVm(this.client, vm, "root", "omini123*", "/usr/bin/ip6conf", $"{ipv6} {IPv6Mask} {IPv6Gateway} {IPv6DNS1} {IPv6DNS2} {IPv6DNS3} {IPv6DNS4} {novaSenha}");
+                    }
+                    //this.tela_inicio.WriteConsole("Configurando ip em Linux(" + processPid + ")");
+                    //this.tela_inicio.WriteConsole("" +
+                    //    "Configurando ip em Linux(" + 
+                    //    this.espec.IPv4 + " " +
+                    //    this.espec.IPv4Mask + " " +
+                    //    this.espec.IPv4Gateway + " " +
+                    //    this.espec.IPv4DNS1 + " " +
+                    //    this.espec.IPv4DNS2 + " " +
+                    //    this.espec.IPv4DNS3 + " " +
+                    //    this.espec.IPv6 + " " +
+                    //    this.espec.IPv6Mask + " " +
+                    //    this.espec.IPv6Gateway + " " +
+                    //    this.espec.IPv6DNS1 + " " +
+                    //    this.espec.IPv6DNS2 + " " +
+                    //    this.espec.IPv6DNS3 + " " +
+                    //    this.espec.novaSenha + " " +
+                    //    ")");
+                    if (processPid != default)
                     {
                         this.tela_inicio.WriteConsole("Configurando ip em Linux(" + this.espec.templateSystemName + ")");
                         this.msg = "configurando ip";
@@ -255,6 +336,7 @@ namespace OminiHost_Server.Class
                     {
                         this.tela_inicio.WriteConsole("IP não configurado, não foi possível iniciar o processo na VM");
                     }
+
                 }
                 else
                 {
@@ -310,7 +392,13 @@ namespace OminiHost_Server.Class
                                 Thread.Sleep(30000);
                                 Omini.debug("Tempo acabou iniciando configuracao");
                                 ConfigurarIP(tf);
-                                
+                                this.progresso = 96;
+                                Thread.Sleep(18750);
+                                this.progresso = 98;
+                                Thread.Sleep(37500);
+                                this.progresso = 99;
+                                Thread.Sleep(18750);
+                                this.progresso = 100;
                             }
                             else
                             {
@@ -335,6 +423,8 @@ namespace OminiHost_Server.Class
                             Omini.debug("Esperando pra marcar como terminado");
                             Thread.Sleep(30000);
                             this.estadoAtual = "terminada";
+                            this.msg = "concluido";
+                            Thread.Sleep(30000);
                             this.msg = "";
                             this.tela_inicio.WriteConsole("Tarefa " + getTarefaType() + " da maquina " + espec.ipVM + " foi termanada" + Environment.NewLine);
 

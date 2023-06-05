@@ -51,7 +51,7 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.Color.PaleGreen;
+            this.menuStrip1.BackColor = System.Drawing.Color.ForestGreen;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItem2,
@@ -77,21 +77,21 @@
             // configuraçõesToolStripMenuItem
             // 
             this.configuraçõesToolStripMenuItem.Name = "configuraçõesToolStripMenuItem";
-            this.configuraçõesToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.configuraçõesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.configuraçõesToolStripMenuItem.Text = "Configurações";
             this.configuraçõesToolStripMenuItem.Click += new System.EventHandler(this.configuraçõesToolStripMenuItem_Click);
             // 
             // iPsPermitidosToolStripMenuItem
             // 
             this.iPsPermitidosToolStripMenuItem.Name = "iPsPermitidosToolStripMenuItem";
-            this.iPsPermitidosToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.iPsPermitidosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.iPsPermitidosToolStripMenuItem.Text = "IPs permitidos";
             this.iPsPermitidosToolStripMenuItem.Click += new System.EventHandler(this.iPsPermitidosToolStripMenuItem_Click);
             // 
             // tarefasToolStripMenuItem
             // 
             this.tarefasToolStripMenuItem.Name = "tarefasToolStripMenuItem";
-            this.tarefasToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.tarefasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tarefasToolStripMenuItem.Text = "Tarefas";
             this.tarefasToolStripMenuItem.Click += new System.EventHandler(this.tarefasToolStripMenuItem_Click);
             // 
@@ -107,14 +107,14 @@
             // encryptadorToolStripMenuItem
             // 
             this.encryptadorToolStripMenuItem.Name = "encryptadorToolStripMenuItem";
-            this.encryptadorToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.encryptadorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.encryptadorToolStripMenuItem.Text = "Encryptador";
             this.encryptadorToolStripMenuItem.Click += new System.EventHandler(this.encryptadorToolStripMenuItem_Click);
             // 
             // limparConsoleToolStripMenuItem
             // 
             this.limparConsoleToolStripMenuItem.Name = "limparConsoleToolStripMenuItem";
-            this.limparConsoleToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.limparConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.limparConsoleToolStripMenuItem.Text = "Limpar console";
             this.limparConsoleToolStripMenuItem.Click += new System.EventHandler(this.limparConsoleToolStripMenuItem_Click);
             // 
@@ -129,7 +129,7 @@
             // reconnectarToolStripMenuItem
             // 
             this.reconnectarToolStripMenuItem.Name = "reconnectarToolStripMenuItem";
-            this.reconnectarToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.reconnectarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reconnectarToolStripMenuItem.Text = "Reconnectar";
             this.reconnectarToolStripMenuItem.Click += new System.EventHandler(this.reconnectarToolStripMenuItem_Click);
             // 
