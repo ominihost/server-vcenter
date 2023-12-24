@@ -408,17 +408,17 @@ namespace OminiHost_Server.Class
                                 this.msg = "aguardando para configurar o ip";
                                 this.tela_inicio.WriteConsole("Configurando IP em Windows " + espec.ipVM);
                                 this.progresso = 94;
-                                Thread.Sleep(150000);
+                                Thread.Sleep(50000);
                                 this.progresso = 95;
-                                Thread.Sleep(150000);
+                                Thread.Sleep(50000);
                                 this.progresso = 96;
-                                Thread.Sleep(150000);
+                                Thread.Sleep(50000);
                                 this.progresso = 97;
-                                Thread.Sleep(150000);
+                                Thread.Sleep(50000);
                                 this.progresso = 98;
-                                Thread.Sleep(30000);
+                                Thread.Sleep(50000);
                                 this.progresso = 99;
-                                Thread.Sleep(30000);
+                                Thread.Sleep(50000);
                                 this.progresso = 100;
                             }
                             Omini.debug("Esperando pra marcar como terminado");

@@ -469,7 +469,7 @@ namespace OminiHost_Server
             newVMSpec.Config.Name = newNomeVm;
             newVMSpec.Config.MemoryMB = vmPHPEspec.memoriaRam;
             newVMSpec.Config.NumCPUs = vmPHPEspec.vCPU;
-            newVMSpec.Config.NumCoresPerSocket = vmPHPEspec.vCPU * vmPHPEspec.fCPU; //Processadores fisicos (NumCPUs*NumCoresPerSocket) 
+            newVMSpec.Config.NumCoresPerSocket = vmPHPEspec.fCPU; //Processadores fisicos (NumCPUs*NumCoresPerSocket) Não funciona esse calulo fica todos os vcore em um soket somente
             newVMSpec.Config.CpuAllocation = new ResourceAllocationInfo();
             newVMSpec.Config.CpuAllocation.Limit = vmPHPEspec.CPU_Mhz;
             newVMSpec.Config.MemoryAllocation = new ResourceAllocationInfo();

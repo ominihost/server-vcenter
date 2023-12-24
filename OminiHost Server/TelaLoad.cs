@@ -158,5 +158,9 @@ namespace OminiHost_Server
             }
         }
 
+        private void carg_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

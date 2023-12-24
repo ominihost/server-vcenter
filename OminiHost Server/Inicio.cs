@@ -276,5 +276,10 @@ namespace OminiHost_Server
                 this.Write("ticket " + aaaaaa.Ticket);                
             }
         }
+
+        private void proxiesCount_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

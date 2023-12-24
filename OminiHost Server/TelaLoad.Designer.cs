@@ -43,6 +43,7 @@
             this.carg.Size = new System.Drawing.Size(272, 29);
             this.carg.TabIndex = 0;
             this.carg.Text = "Carregando, aguarde...";
+            this.carg.Click += new System.EventHandler(this.carg_Click);
             // 
             // TelaLoad
             // 
